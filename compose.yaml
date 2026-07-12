@@ -1,4 +1,4 @@
-name: ${COMPOSE_PROJECT_NAME}
+name: ${COMPOSE_PROJECT_NAME:-cfroute-controller}
 
 services:
   cfroute-controller:
@@ -10,14 +10,18 @@ services:
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN:?Set CF_API_TOKEN in .env}
       CF_ZONE_ID: ${CF_ZONE_ID:?Set CF_ZONE_ID in .env}
+      CF_MANAGED_ZONE_IDS: ${CF_MANAGED_ZONE_IDS:-}
       CF_TUNNEL_CNAME: ${CF_TUNNEL_CNAME:-}
       RECONCILE_INTERVAL_SECONDS: ${RECONCILE_INTERVAL_SECONDS:-120}
       EVENT_DEBOUNCE_MS: ${EVENT_DEBOUNCE_MS:-500}
       ALLOW_TARGET_MISMATCH: ${ALLOW_TARGET_MISMATCH:-false}
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      DOCKER_SOCKET_PATH: ${DOCKER_SOCKS_PATH:?Set DOCKER_SOCKS_PATH in .env}
+      DOCKER_SOCKET_PATH: /var/run/docker.sock
+      CLOUDFLARE_TIMEOUT_SECONDS: ${CLOUDFLARE_TIMEOUT_SECONDS:-20}
+      CLOUDFLARE_MAX_ATTEMPTS: ${CLOUDFLARE_MAX_ATTEMPTS:-3}
+      HEARTBEAT_PATH: /tmp/cfroute-controller-heartbeat
     volumes:
-      - ${DOCKER_SOCKS_PATH:?Set DOCKER_SOCKS_PATH in .env}:/var/run/docker.sock:ro
+      - ${DOCKER_SOCKET_PATH:-/var/run/docker.sock}:/var/run/docker.sock:ro
     healthcheck:
       test: [ "CMD", "python", "-m", "controller.main", "--healthcheck" ]
       interval: 30s

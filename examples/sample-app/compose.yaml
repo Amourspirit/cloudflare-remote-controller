@@ -1,0 +1,10 @@
+name: cfroute-sample
+
+services:
+  sample-app:
+    build: .
+    labels:
+      cfroute.enabled: "true"
+      cfroute.names: ${SAMPLE_ROUTE_NAME:?Set SAMPLE_ROUTE_NAME}
+      cfroute.proxied: "true"
+      cfroute.delete_on_stop: "true"
