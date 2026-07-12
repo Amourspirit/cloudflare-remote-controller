@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[co]
+.pytest_cache/
+.mypy_cache/
+*.egg-info
+.ruff_cache/
+*.pid
+wheels/
+
+build/
+dist/
+tmp/
+
+# Virtual environments
+.venv/
+venv/
+
+
+# Environment files
+.env
+!.env.example
+
+# OS / editor
+.DS_Store
+.idea/
+
+# VS Code
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Project storage
+storage/
+
+# Local project configuration
+project-config-local/
+
+
+# utility files
+tree.txt
+*.log
+
+# Context Mode
+/.github/context-mode/
+/.vscode/mcp.json
+
+# PI
+.pi/sessions/
+.pi/agent/
+.pi/extensions/
+.pi/tools/
+.pi/skills/
+.pi/settings.json
+
+# Local environment automation
+# Use .envrc for direnv or similar tools to manage environment variables
+# locally when the project folder is accessed.
+# This file should not be committed to version control.
+.envrc
+!.envrc.example
+
+Project-local-*

@@ -1,0 +1,25 @@
+name: ${COMPOSE_PROJECT_NAME}
+
+services:
+  cfroute-controller:
+    build:
+      context: .
+    container_name: cfroute-controller
+    restart: always
+    profiles: [ controller ]
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN:?Set CF_API_TOKEN in .env}
+      CF_ZONE_ID: ${CF_ZONE_ID:?Set CF_ZONE_ID in .env}
+      CF_TUNNEL_CNAME: ${CF_TUNNEL_CNAME:-}
+      RECONCILE_INTERVAL_SECONDS: ${RECONCILE_INTERVAL_SECONDS:-120}
+      EVENT_DEBOUNCE_MS: ${EVENT_DEBOUNCE_MS:-500}
+      ALLOW_TARGET_MISMATCH: ${ALLOW_TARGET_MISMATCH:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DOCKER_SOCKET_PATH: ${DOCKER_SOCKS_PATH:?Set DOCKER_SOCKS_PATH in .env}
+    volumes:
+      - ${DOCKER_SOCKS_PATH:?Set DOCKER_SOCKS_PATH in .env}:/var/run/docker.sock:ro
+    healthcheck:
+      test: [ "CMD", "python", "-m", "controller.main", "--healthcheck" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
